@@ -17,6 +17,10 @@ input {
     focus-follows-mouse
 }
 
+output "eDP-1" {
+    scale 1.25 // 或者 1.25，根据你眼睛的舒适度调整
+}
+
 // --- 窗口布局设置 ---
 layout {
     gaps 4

@@ -7,5 +7,6 @@
     # other pkgs
     vscode
     microsoft-edge
+    google-chrome
   ];
 }

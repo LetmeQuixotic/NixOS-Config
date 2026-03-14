@@ -7,10 +7,6 @@
   boot.loader.systemd-boot.enable = true;  # 启用systemd-boot引导程序
   boot.loader.efi.canTouchEfiVariables = true;  # 允许修改EFI变量，支持UEFI引导
 
-  # Enable VirtualBox Guest Additions for better display/mouse support
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.guest.dragAndDrop = true;
-
   # 网络配置
   networking.hostName = "nixos";  # 设置主机名
   networking.networkmanager.enable = true;  # 启用NetworkManager，支持无线网络管理
@@ -94,6 +90,28 @@
 
   # Nixpkgs配置
   nixpkgs.config.allowUnfree = true;  # 允许安装非自由软件包
+
+  #Enable Nvidia driver
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false; # 笔记本如果休眠有问题再改
+    open = false; # 50系显卡建议先用闭源驱动保证稳定性
+    nvidiaSettings = true;
+  
+    # 针对笔记本的双显卡 (PRIME) 配置
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      # 注意：这里的 Bus ID 需要你运行 `lspci | grep -E "VGA|3D"` 后根据实际填入
+      # 通常形式是 PCI:0:2:0 和 PCI:1:0:0
+      intelBusId = "PCI:0:2:0"; 
+      nvidiaBusId = "PCI:1:0:0";
+    };
+  };
 
   # 系统级包列表
   environment.systemPackages = with pkgs; [
